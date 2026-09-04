@@ -1,6 +1,6 @@
 --[========================================================]
---[      YUAN THE GOAT - BLOX FRUITS GOD MODE V3.0          ]
---[         Advanced Silent Aim & Lock-On System            ]
+--[      YUAN THE GOAT - STEAL AN EGG GOD HUB V1.0         ]
+--[      Theme: Black, Red & White | Dual Language         ]
 --[========================================================]
 
 local Players = game:GetService("Players")
@@ -11,30 +11,22 @@ local Workspace = game:GetService("Workspace")
 local LocalPlayer = Players.LocalPlayer
 local Camera = Workspace.CurrentCamera
 
--- Configuration Variables
-getgenv().YuanConfig = {
-    AimbotEnabled = false,
-    SilentAimEnabled = false,
-    AimPart = "HumanoidRootPart",
-    TargetNPCs = true,
-    TargetPlayers = true,
-    FOV = 400,
-    ShowFOV = true,
+-- Configuration
+getgenv().YuanEggConfig = {
+    Language = "EN", -- "AR" or "EN"
+    SpeedEnabled = false,
+    WalkSpeed = 16,
     FlyEnabled = false,
-    FlySpeed = 60,
-    ESPEnabled = false,
-    BoxESP = true,
-    NameESP = true
+    FlySpeed = 200
 }
 
--- Remove existing GUI if any
-if CoreGui:FindFirstChild("YuanBloxFruitsGUI") then
-    CoreGui.YuanBloxFruitsGUI:Destroy()
+-- Remove existing GUI
+if CoreGui:FindFirstChild("YuanStealAnEggGUI") then
+    CoreGui.YuanStealAnEggGUI:Destroy()
 end
 
--- Main ScreenGui
 local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "YuanBloxFruitsGUI"
+ScreenGui.Name = "YuanStealAnEggGUI"
 ScreenGui.ResetOnSpawn = false
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
@@ -47,23 +39,15 @@ else
     ScreenGui.Parent = CoreGui
 end
 
--- FOV Circle
-local FOVCircle = Drawing.new("Circle")
-FOVCircle.Transparency = 0.8
-FOVCircle.Thickness = 1.5
-FOVCircle.Color = Color3.fromRGB(255, 255, 255)
-FOVCircle.Filled = false
-FOVCircle.Visible = false
-
--- Main Frame
+-- Main Frame (Black & Red Luxury Theme)
 local MainFrame = Instance.new("Frame")
 MainFrame.Name = "MainFrame"
 MainFrame.Parent = ScreenGui
-MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-MainFrame.BorderColor3 = Color3.fromRGB(255, 255, 255)
-MainFrame.BorderSizePixel = 1
-MainFrame.Position = UDim2.new(0.5, -275, 0.5, -185)
-MainFrame.Size = UDim2.new(0, 550, 0, 370)
+MainFrame.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
+MainFrame.BorderColor3 = Color3.fromRGB(220, 20, 60) -- Crimson Red
+MainFrame.BorderSizePixel = 2
+MainFrame.Position = UDim2.new(0.5, -260, 0.5, -170)
+MainFrame.Size = UDim2.new(0, 520, 0, 340)
 MainFrame.Active = true
 MainFrame.Draggable = true
 
@@ -71,9 +55,16 @@ MainFrame.Draggable = true
 local Header = Instance.new("Frame")
 Header.Name = "Header"
 Header.Parent = MainFrame
-Header.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+Header.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
 Header.BorderSizePixel = 0
-Header.Size = UDim2.new(1, 0, 0, 40)
+Header.Size = UDim2.new(1, 0, 0, 45)
+
+local HeaderBorder = Instance.new("Frame")
+HeaderBorder.Parent = Header
+HeaderBorder.BackgroundColor3 = Color3.fromRGB(220, 20, 60)
+HeaderBorder.BorderSizePixel = 0
+HeaderBorder.Position = UDim2.new(0, 0, 1, -2)
+HeaderBorder.Size = UDim2.new(1, 0, 0, 2)
 
 local Title = Instance.new("TextLabel")
 Title.Parent = Header
@@ -81,58 +72,102 @@ Title.BackgroundTransparency = 1
 Title.Position = UDim2.new(0, 15, 0, 0)
 Title.Size = UDim2.new(0, 300, 1, 0)
 Title.Font = Enum.Font.Code
-Title.Text = "YUAN // GOD MODE HUB V3"
+Title.Text = "YUAN // STEAL AN EGG HUB"
 Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-Title.TextSize = 16
+Title.TextSize = 15
 Title.TextXAlignment = Enum.TextXAlignment.Left
+
+-- Language Switcher Button
+local LangBtn = Instance.new("TextButton")
+LangBtn.Parent = Header
+LangBtn.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+LangBtn.BorderColor3 = Color3.fromRGB(220, 20, 60)
+LangBtn.Position = UDim2.new(1, -110, 0.5, -15)
+LangBtn.Size = UDim2.new(0, 95, 0, 30)
+LangBtn.Font = Enum.Font.Code
+LangBtn.Text = "LANG: EN/AR"
+LangBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+LangBtn.TextSize = 12
 
 -- Container
 local Container = Instance.new("ScrollingFrame")
 Container.Name = "Container"
 Container.Parent = MainFrame
 Container.Active = true
-Container.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
-Container.BorderColor3 = Color3.fromRGB(40, 40, 40)
-Container.Position = UDim2.new(0, 12, 0, 55)
-Container.Size = UDim2.new(0, 526, 0, 300)
-Container.CanvasSize = UDim2.new(0, 0, 0, 500)
+Container.BackgroundColor3 = Color3.fromRGB(8, 8, 8)
+Container.BorderColor3 = Color3.fromRGB(30, 30, 30)
+Container.Position = UDim2.new(0, 12, 0, 60)
+Container.Size = UDim2.new(0, 496, 0, 265)
+Container.CanvasSize = UDim2.new(0, 0, 0, 400)
 Container.ScrollBarThickness = 4
-Container.ScrollBarImageColor3 = Color3.fromRGB(255, 255, 255)
+Container.ScrollBarImageColor3 = Color3.fromRGB(220, 20, 60)
 
 local UIListLayout = Instance.new("UIListLayout")
 UIListLayout.Parent = Container
 UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-UIListLayout.Padding = UDim.new(0, 8)
+UIListLayout.Padding = UDim.new(0, 10)
 
--- Toggle Creator Function
-local function CreateToggle(name, default, callback)
+-- Helper to update texts based on language
+local textElements = {}
+
+local function RegisterText(enText, arText, obj, textType)
+    table.insert(textElements, {EN = enText, AR = arText, Object = obj, Type = textType})
+    obj.Text = (getgenv().YuanEggConfig.Language == "AR") and arText or enText
+end
+
+LangBtn.MouseButton1Click:Connect(function()
+    if getgenv().YuanEggConfig.Language == "EN" then
+        getgenv().YuanEggConfig.Language = "AR"
+    else
+        getgenv().YuanEggConfig.Language = "EN"
+    end
+    
+    for _, item in ipairs(textElements) do
+        local txt = (getgenv().YuanEggConfig.Language == "AR") and item.AR else item.EN
+        if item.Type == "Toggle" then
+            local stateText = item.Object.Text:match("%[.*%]") or "[OFF]"
+            item.Object.Text = "  " .. txt .. ": " .. stateText
+        else
+            item.Object.Text = "  " .. txt
+        end
+    end
+end)
+
+-- Create Toggle Function
+local function CreateToggle(enName, arName, default, callback)
     local ToggleBtn = Instance.new("TextButton")
     ToggleBtn.Parent = Container
-    ToggleBtn.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-    ToggleBtn.BorderColor3 = Color3.fromRGB(60, 60, 60)
-    ToggleBtn.Size = UDim2.new(1, -10, 0, 40)
+    ToggleBtn.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+    ToggleBtn.BorderColor3 = Color3.fromRGB(50, 50, 50)
+    ToggleBtn.Size = UDim2.new(1, -10, 0, 45)
     ToggleBtn.Font = Enum.Font.Code
-    ToggleBtn.Text = "  " .. name .. ": " .. (default and "[ON]" or "[OFF]")
-    ToggleBtn.TextColor3 = default and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(120, 120, 120)
+    ToggleBtn.TextColor3 = default and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(140, 140, 140)
     ToggleBtn.TextSize = 14
     ToggleBtn.TextXAlignment = Enum.TextXAlignment.Left
 
     local state = default
+    local function updateText()
+        local prefix = (getgenv().YuanEggConfig.Language == "AR") and arName or enName
+        ToggleBtn.Text = "  " .. prefix .. ": " .. (state and "[ON / مفعل]" or "[OFF / معطل]")
+    end
+    updateText()
+    RegisterText(enName, arName, ToggleBtn, "Toggle")
+
     ToggleBtn.MouseButton1Click:Connect(function()
         state = not state
-        ToggleBtn.Text = "  " .. name .. ": " .. (state and "[ON]" or "[OFF]")
-        ToggleBtn.TextColor3 = state and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(120, 120, 120)
+        ToggleBtn.TextColor3 = state and Color3.fromRGB(255, 69, 0) or Color3.fromRGB(140, 140, 140)
+        updateText()
         callback(state)
     end)
 end
 
--- FOV Slider Creator Function
-local function CreateSlider(name, min, max, default, callback)
+-- Create Slider Function
+local function CreateSlider(enName, arName, min, max, default, callback)
     local SliderFrame = Instance.new("Frame")
     SliderFrame.Parent = Container
-    SliderFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-    SliderFrame.BorderColor3 = Color3.fromRGB(60, 60, 60)
-    SliderFrame.Size = UDim2.new(1, -10, 0, 50)
+    SliderFrame.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+    SliderFrame.BorderColor3 = Color3.fromRGB(50, 50, 50)
+    SliderFrame.Size = UDim2.new(1, -10, 0, 55)
 
     local TextLabel = Instance.new("TextLabel")
     TextLabel.Parent = SliderFrame
@@ -140,22 +175,29 @@ local function CreateSlider(name, min, max, default, callback)
     TextLabel.Position = UDim2.new(0, 10, 0, 5)
     TextLabel.Size = UDim2.new(1, -20, 0, 20)
     TextLabel.Font = Enum.Font.Code
-    TextLabel.Text = "  " .. name .. ": " .. default
     TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
     TextLabel.TextSize = 14
     TextLabel.TextXAlignment = Enum.TextXAlignment.Left
 
+    local function updateLabel(val)
+        local name = (getgenv().YuanEggConfig.Language == "AR") and arName or enName
+        TextLabel.Text = "  " .. name .. ": " .. val
+    end
+    updateLabel(default)
+    
+    table.insert(textElements, {EN = enName, AR = arName, Object = TextLabel, Type = "Slider", ValGetter = function() return ": " .. math.floor(default) end})
+
     local SliderBar = Instance.new("TextButton")
     SliderBar.Parent = SliderFrame
-    SliderBar.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    SliderBar.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
     SliderBar.BorderSizePixel = 0
-    SliderBar.Position = UDim2.new(0, 10, 0, 30)
+    SliderBar.Position = UDim2.new(0, 10, 0, 35)
     SliderBar.Size = UDim2.new(1, -20, 0, 10)
     SliderBar.Text = ""
 
     local Fill = Instance.new("Frame")
     Fill.Parent = SliderBar
-    Fill.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Fill.BackgroundColor3 = Color3.fromRGB(220, 20, 60)
     Fill.BorderSizePixel = 0
     Fill.Size = UDim2.new((default - min)/(max - min), 0, 1, 0)
 
@@ -177,123 +219,35 @@ local function CreateSlider(name, min, max, default, callback)
             local pos = UDim2.new(math.clamp((input.Position.X - SliderBar.AbsolutePosition.X) / SliderBar.AbsoluteSize.X, 0, 1), 0, 1, 0)
             Fill.Size = pos
             local val = math.floor(min + ((max - min) * pos.X.Scale))
+            default = val
+            local name = (getgenv().YuanEggConfig.Language == "AR") and arName or enName
             TextLabel.Text = "  " .. name .. ": " .. val
             callback(val)
         end
     end)
 end
 
--- Target Engine (Independent of ShiftLock)
-local function GetClosestTarget()
-    local closestTarget = nil
-    local shortestDistance = math.huge
-    local mousePos = UserInputService:GetMouseLocation()
+-- 1. WalkSpeed Hack (Up to 5000 Rocket Speed)
+CreateToggle("Super Speed Mode", "وضع السرعة الخارقة", false, function(state)
+    getgenv().YuanEggConfig.SpeedEnabled = state
+end)
 
-    -- Check Players
-    if getgenv().YuanConfig.TargetPlayers then
-        for _, player in ipairs(Players:GetPlayers()) do
-            if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("Humanoid") and player.Character.Humanoid.Health > 0 then
-                local hrp = player.Character:FindFirstChild(getgenv().YuanConfig.AimPart)
-                if hrp then
-                    local screenPos, onScreen = Camera:WorldToViewportPoint(hrp.Position)
-                    local distance = (Vector2.new(screenPos.X, screenPos.Y) - mousePos).Magnitude
-                    if distance < shortestDistance and distance <= getgenv().YuanConfig.FOV then
-                        shortestDistance = distance
-                        closestTarget = hrp
-                    end
-                end
-            end
-        end
-    end
-
-    -- Check NPCs/Bots
-    if getgenv().YuanConfig.TargetNPCs then
-        local enemiesFolder = Workspace:FindFirstChild("Enemies")
-        if enemiesFolder then
-            for _, npc in ipairs(enemiesFolder:GetChildren()) do
-                local hum = npc:FindFirstChildOfClass("Humanoid")
-                local hrp = npc:FindFirstChild(getgenv().YuanConfig.AimPart)
-                if hum and hrp and hum.Health > 0 then
-                    local screenPos, onScreen = Camera:WorldToViewportPoint(hrp.Position)
-                    local distance = (Vector2.new(screenPos.X, screenPos.Y) - mousePos).Magnitude
-                    if distance < shortestDistance and distance <= getgenv().YuanConfig.FOV then
-                        shortestDistance = distance
-                        closestTarget = hrp
-                    end
-                end
-            end
-        end
-    end
-
-    return closestTarget
-end
-
--- 1. Hard Aimbot (No ShiftLock Required)
-CreateToggle("Hard Aimbot (Instant Lock)", false, function(state)
-    getgenv().YuanConfig.AimbotEnabled = state
+CreateSlider("Max Speed (16 - 5000)", "السرعة القصوى (16 - 5000)", 16, 5000, 100, function(val)
+    getgenv().YuanEggConfig.WalkSpeed = val
 end)
 
 RunService.RenderStepped:Connect(function()
-    if getgenv().YuanConfig.AimbotEnabled then
-        local target = GetClosestTarget()
-        if target then
-            -- Forces Camera to look directly at target regardless of shift lock state
-            Camera.CFrame = CFrame.new(Camera.CFrame.Position, target.Position)
-        end
-    end
-
-    -- FOV Visualizer Update
-    if getgenv().YuanConfig.ShowFOV then
-        FOVCircle.Position = UserInputService:GetMouseLocation()
-        FOVCircle.Radius = getgenv().YuanConfig.FOV
-        FOVCircle.Visible = getgenv().YuanConfig.AimbotEnabled or getgenv().YuanConfig.SilentAimEnabled
-    else
-        FOVCircle.Visible = false
+    if getgenv().YuanEggConfig.SpeedEnabled and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") then
+        LocalPlayer.Character.Humanoid.WalkSpeed = getgenv().YuanEggConfig.WalkSpeed
     end
 end)
 
--- Slider for FOV Range
-CreateSlider("FOV Range", 100, 1000, 400, function(val)
-    getgenv().YuanConfig.FOV = val
-end)
-
--- 2. God-Tier Silent Aim (Auto Hit without Character Turning)
-CreateToggle("Silent Aim (Zero Miss / No Turn)", false, function(state)
-    getgenv().YuanConfig.SilentAimEnabled = state
-end)
-
-local mt = getrawmetatable(game)
-setreadonly(mt, false)
-local oldNamecall = mt.__namecall
-
-mt.__namecall = newcclosure(function(self, ...)
-    local args = {...}
-    local method = getnamecallmethod()
-    
-    if getgenv().YuanConfig.SilentAimEnabled and (method == "FireServer" or method == "InvokeServer") then
-        local target = GetClosestTarget()
-        if target then
-            for i, v in ipairs(args) do
-                if typeof(v) == "Vector3" then
-                    args[i] = target.Position
-                elseif typeof(v) == "CFrame" then
-                    args[i] = CFrame.new(target.Position)
-                end
-            end
-            return oldNamecall(self, unpack(args))
-        end
-    end
-    
-    return oldNamecall(self, ...)
-end)
-setreadonly(mt, true)
-
--- 3. Advanced Fly Mode
+-- 2. Fly Mode (Rocket Flight)
 local flying = false
 local bv, bg
 
-CreateToggle("Flight (Fly Mode)", false, function(state)
-    getgenv().YuanConfig.FlyEnabled = state
+CreateToggle("Rocket Flight", "الطيران الصاروخي", false, function(state)
+    getgenv().YuanEggConfig.FlyEnabled = state
     flying = state
     local char = LocalPlayer.Character
     if not char or not char:FindFirstChild("HumanoidRootPart") then return end
@@ -314,6 +268,10 @@ CreateToggle("Flight (Fly Mode)", false, function(state)
     end
 end)
 
+CreateSlider("Flight Speed", "سرعة الطيران", 50, 1000, 250, function(val)
+    getgenv().YuanEggConfig.FlySpeed = val
+end)
+
 RunService.RenderStepped:Connect(function()
     if flying and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
         local hrp = LocalPlayer.Character.HumanoidRootPart
@@ -324,89 +282,9 @@ RunService.RenderStepped:Connect(function()
             if UserInputService:IsKeyDown(Enum.KeyCode.S) then moveDir = moveDir - Camera.CFrame.LookVector end
             if UserInputService:IsKeyDown(Enum.KeyCode.A) then moveDir = moveDir - Camera.CFrame.RightVector end
             if UserInputService:IsKeyDown(Enum.KeyCode.D) then moveDir = moveDir + Camera.CFrame.RightVector end
-            bv.Velocity = moveDir * getgenv().YuanConfig.FlySpeed
+            bv.Velocity = moveDir * getgenv().YuanEggConfig.FlySpeed
         end
     end
 end)
 
--- 4. ESP Engine
-local espCache = {}
-
-local function CreateESP(object, nameText)
-    if espCache[object] then return end
-    local box = Drawing.new("Square")
-    box.Visible = false
-    box.Color = Color3.fromRGB(255, 255, 255)
-    box.Thickness = 1
-    box.Filled = false
-
-    local name = Drawing.new("Text")
-    name.Visible = false
-    name.Color = Color3.fromRGB(255, 255, 255)
-    name.Size = 13
-    name.Center = true
-    name.Outline = true
-
-    espCache[object] = {Box = box, Name = name}
-end
-
-CreateToggle("ESP (Players & NPCs)", false, function(state)
-    getgenv().YuanConfig.ESPEnabled = state
-    if not state then
-        for _, data in pairs(espCache) do
-            data.Box.Visible = false
-            data.Name.Visible = false
-        end
-    end
-end)
-
-RunService.RenderStepped:Connect(function()
-    if not getgenv().YuanConfig.ESPEnabled then return end
-
-    for _, player in ipairs(Players:GetPlayers()) do
-        if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") and player.Character:FindFirstChild("Humanoid") and player.Character.Humanoid.Health > 0 then
-            CreateESP(player.Character)
-        end
-    end
-
-    local enemiesFolder = Workspace:FindFirstChild("Enemies")
-    if enemiesFolder then
-        for _, npc in ipairs(enemiesFolder:GetChildren()) do
-            local hum = npc:FindFirstChildOfClass("Humanoid")
-            local hrp = npc:FindFirstChild("HumanoidRootPart")
-            if hum and hrp and hum.Health > 0 then
-                CreateESP(npc)
-            end
-        end
-    end
-
-    for obj, data in pairs(espCache) do
-        if obj and obj.Parent and obj:FindFirstChild("HumanoidRootPart") and obj:FindFirstChildOfClass("Humanoid") and obj.Humanoid.Health > 0 then
-            local hrp = obj.HumanoidRootPart
-            local vector, onScreen = Camera:WorldToViewportPoint(hrp.Position)
-            if onScreen then
-                local headPos = Camera:WorldToViewportPoint(hrp.Position + Vector3.new(0, 2.5, 0))
-                local legPos = Camera:WorldToViewportPoint(hrp.Position - Vector3.new(0, 3, 0))
-                local height = math.abs(headPos.Y - legPos.Y)
-                local width = height / 2
-
-                data.Box.Size = Vector2.new(width, height)
-                data.Box.Position = Vector2.new(vector.X - width / 2, vector.Y - height / 2)
-                data.Box.Visible = getgenv().YuanConfig.BoxESP
-
-                data.Name.Text = obj.Name
-                data.Name.Position = Vector2.new(vector.X, headPos.Y - 15)
-                data.Name.Visible = getgenv().YuanConfig.NameESP
-            else
-                data.Box.Visible = false
-                data.Name.Visible = false
-            end
-        else
-            data.Box.Visible = false
-            data.Name.Visible = false
-            espCache[obj] = nil
-        end
-    end
-end)
-
-print("Yuan God Mode Hub V3 Loaded Successfully!")
+print("Yuan Steal An Egg Hub Loaded Successfully!")
