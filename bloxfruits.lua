@@ -1,6 +1,6 @@
 --[========================================================]
---[        YUAN THE GOAT - BLOX FRUITS ULTIMATE GUI        ]
---[          Designed for Performance & Precision          ]
+--[      YUAN THE GOAT - BLOX FRUITS GOD MODE V3.0          ]
+--[         Advanced Silent Aim & Lock-On System            ]
 --[========================================================]
 
 local Players = game:GetService("Players")
@@ -15,18 +15,16 @@ local Camera = Workspace.CurrentCamera
 getgenv().YuanConfig = {
     AimbotEnabled = false,
     SilentAimEnabled = false,
-    AimbotSmoothness = 1,
     AimPart = "HumanoidRootPart",
     TargetNPCs = true,
     TargetPlayers = true,
-    FOV = 350,
+    FOV = 400,
     ShowFOV = true,
     FlyEnabled = false,
-    FlySpeed = 50,
+    FlySpeed = 60,
     ESPEnabled = false,
     BoxESP = true,
-    NameESP = true,
-    DistanceESP = true
+    NameESP = true
 }
 
 -- Remove existing GUI if any
@@ -34,13 +32,12 @@ if CoreGui:FindFirstChild("YuanBloxFruitsGUI") then
     CoreGui.YuanBloxFruitsGUI:Destroy()
 end
 
--- Main ScreenGui (Minimalist Dark Theme: Black & White)
+-- Main ScreenGui
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "YuanBloxFruitsGUI"
 ScreenGui.ResetOnSpawn = false
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
--- Protect GUI if executor supports it
 if syn and syn.protect_gui then
     syn.protect_gui(ScreenGui)
     ScreenGui.Parent = CoreGui
@@ -52,7 +49,7 @@ end
 
 -- FOV Circle
 local FOVCircle = Drawing.new("Circle")
-FOVCircle.Transparency = 0.7
+FOVCircle.Transparency = 0.8
 FOVCircle.Thickness = 1.5
 FOVCircle.Color = Color3.fromRGB(255, 255, 255)
 FOVCircle.Filled = false
@@ -65,12 +62,12 @@ MainFrame.Parent = ScreenGui
 MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
 MainFrame.BorderColor3 = Color3.fromRGB(255, 255, 255)
 MainFrame.BorderSizePixel = 1
-MainFrame.Position = UDim2.new(0.5, -275, 0.5, -175)
-MainFrame.Size = UDim2.new(0, 550, 0, 350)
+MainFrame.Position = UDim2.new(0.5, -275, 0.5, -185)
+MainFrame.Size = UDim2.new(0, 550, 0, 370)
 MainFrame.Active = true
 MainFrame.Draggable = true
 
--- Top Bar / Header
+-- Header
 local Header = Instance.new("Frame")
 Header.Name = "Header"
 Header.Parent = MainFrame
@@ -84,23 +81,12 @@ Title.BackgroundTransparency = 1
 Title.Position = UDim2.new(0, 15, 0, 0)
 Title.Size = UDim2.new(0, 300, 1, 0)
 Title.Font = Enum.Font.Code
-Title.Text = "YUAN // BLOX FRUITS HUB"
+Title.Text = "YUAN // GOD MODE HUB V3"
 Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 Title.TextSize = 16
 Title.TextXAlignment = Enum.TextXAlignment.Left
 
-local Subtitle = Instance.new("TextLabel")
-Subtitle.Parent = Header
-Subtitle.BackgroundTransparency = 1
-Subtitle.Position = UDim2.new(1, -150, 0, 0)
-Subtitle.Size = UDim2.new(0, 140, 1, 0)
-Subtitle.Font = Enum.Font.Code
-Subtitle.Text = "[v2.0 PRO]"
-Subtitle.TextColor3 = Color3.fromRGB(150, 150, 150)
-Subtitle.TextSize = 14
-Subtitle.TextXAlignment = Enum.TextXAlignment.Right
-
--- Container for Toggles / Features
+-- Container
 local Container = Instance.new("ScrollingFrame")
 Container.Name = "Container"
 Container.Parent = MainFrame
@@ -108,8 +94,8 @@ Container.Active = true
 Container.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
 Container.BorderColor3 = Color3.fromRGB(40, 40, 40)
 Container.Position = UDim2.new(0, 12, 0, 55)
-Container.Size = UDim2.new(0, 526, 0, 280)
-Container.CanvasSize = UDim2.new(0, 0, 0, 450)
+Container.Size = UDim2.new(0, 526, 0, 300)
+Container.CanvasSize = UDim2.new(0, 0, 0, 500)
 Container.ScrollBarThickness = 4
 Container.ScrollBarImageColor3 = Color3.fromRGB(255, 255, 255)
 
@@ -118,7 +104,7 @@ UIListLayout.Parent = Container
 UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UIListLayout.Padding = UDim.new(0, 8)
 
--- Function to create clean toggle buttons
+-- Toggle Creator Function
 local function CreateToggle(name, default, callback)
     local ToggleBtn = Instance.new("TextButton")
     ToggleBtn.Parent = Container
@@ -140,7 +126,64 @@ local function CreateToggle(name, default, callback)
     end)
 end
 
--- Utility: Find Closest Target (Players + NPCs)
+-- FOV Slider Creator Function
+local function CreateSlider(name, min, max, default, callback)
+    local SliderFrame = Instance.new("Frame")
+    SliderFrame.Parent = Container
+    SliderFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+    SliderFrame.BorderColor3 = Color3.fromRGB(60, 60, 60)
+    SliderFrame.Size = UDim2.new(1, -10, 0, 50)
+
+    local TextLabel = Instance.new("TextLabel")
+    TextLabel.Parent = SliderFrame
+    TextLabel.BackgroundTransparency = 1
+    TextLabel.Position = UDim2.new(0, 10, 0, 5)
+    TextLabel.Size = UDim2.new(1, -20, 0, 20)
+    TextLabel.Font = Enum.Font.Code
+    TextLabel.Text = "  " .. name .. ": " .. default
+    TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TextLabel.TextSize = 14
+    TextLabel.TextXAlignment = Enum.TextXAlignment.Left
+
+    local SliderBar = Instance.new("TextButton")
+    SliderBar.Parent = SliderFrame
+    SliderBar.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    SliderBar.BorderSizePixel = 0
+    SliderBar.Position = UDim2.new(0, 10, 0, 30)
+    SliderBar.Size = UDim2.new(1, -20, 0, 10)
+    SliderBar.Text = ""
+
+    local Fill = Instance.new("Frame")
+    Fill.Parent = SliderBar
+    Fill.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Fill.BorderSizePixel = 0
+    Fill.Size = UDim2.new((default - min)/(max - min), 0, 1, 0)
+
+    local dragging = false
+    SliderBar.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            dragging = true
+        end
+    end)
+
+    UserInputService.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            dragging = false
+        end
+    end)
+
+    UserInputService.InputChanged:Connect(function(input)
+        if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+            local pos = UDim2.new(math.clamp((input.Position.X - SliderBar.AbsolutePosition.X) / SliderBar.AbsoluteSize.X, 0, 1), 0, 1, 0)
+            Fill.Size = pos
+            local val = math.floor(min + ((max - min) * pos.X.Scale))
+            TextLabel.Text = "  " .. name .. ": " .. val
+            callback(val)
+        end
+    end)
+end
+
+-- Target Engine (Independent of ShiftLock)
 local function GetClosestTarget()
     local closestTarget = nil
     local shortestDistance = math.huge
@@ -163,7 +206,7 @@ local function GetClosestTarget()
         end
     end
 
-    -- Check NPCs (Enemies in Blox Fruits workspace)
+    -- Check NPCs/Bots
     if getgenv().YuanConfig.TargetNPCs then
         local enemiesFolder = Workspace:FindFirstChild("Enemies")
         if enemiesFolder then
@@ -185,8 +228,8 @@ local function GetClosestTarget()
     return closestTarget
 end
 
--- 1. Aimbot Logic
-CreateToggle("Hard Aimbot (Lock-on)", false, function(state)
+-- 1. Hard Aimbot (No ShiftLock Required)
+CreateToggle("Hard Aimbot (Instant Lock)", false, function(state)
     getgenv().YuanConfig.AimbotEnabled = state
 end)
 
@@ -194,11 +237,12 @@ RunService.RenderStepped:Connect(function()
     if getgenv().YuanConfig.AimbotEnabled then
         local target = GetClosestTarget()
         if target then
+            -- Forces Camera to look directly at target regardless of shift lock state
             Camera.CFrame = CFrame.new(Camera.CFrame.Position, target.Position)
         end
     end
 
-    -- Update FOV Circle Position
+    -- FOV Visualizer Update
     if getgenv().YuanConfig.ShowFOV then
         FOVCircle.Position = UserInputService:GetMouseLocation()
         FOVCircle.Radius = getgenv().YuanConfig.FOV
@@ -208,12 +252,16 @@ RunService.RenderStepped:Connect(function()
     end
 end)
 
--- 2. Silent Aim Logic
-CreateToggle("Silent Aim (Zero Miss)", false, function(state)
+-- Slider for FOV Range
+CreateSlider("FOV Range", 100, 1000, 400, function(val)
+    getgenv().YuanConfig.FOV = val
+end)
+
+-- 2. God-Tier Silent Aim (Auto Hit without Character Turning)
+CreateToggle("Silent Aim (Zero Miss / No Turn)", false, function(state)
     getgenv().YuanConfig.SilentAimEnabled = state
 end)
 
--- Hooking Metatable to redirect bullets/attacks directly to target
 local mt = getrawmetatable(game)
 setreadonly(mt, false)
 local oldNamecall = mt.__namecall
@@ -227,7 +275,6 @@ mt.__namecall = newcclosure(function(self, ...)
         if target then
             for i, v in ipairs(args) do
                 if typeof(v) == "Vector3" then
-                    -- Redirect Vector3 positions (such as projectiles or raycasts) to the exact target part
                     args[i] = target.Position
                 elseif typeof(v) == "CFrame" then
                     args[i] = CFrame.new(target.Position)
@@ -241,7 +288,7 @@ mt.__namecall = newcclosure(function(self, ...)
 end)
 setreadonly(mt, true)
 
--- 3. Fly Logic
+-- 3. Advanced Fly Mode
 local flying = false
 local bv, bg
 
@@ -273,29 +320,20 @@ RunService.RenderStepped:Connect(function()
         if bv and bg then
             bg.CFrame = Camera.CFrame
             local moveDir = Vector3.new()
-            if UserInputService:IsKeyDown(Enum.KeyCode.W) then
-                moveDir = moveDir + Camera.CFrame.LookVector
-            end
-            if UserInputService:IsKeyDown(Enum.KeyCode.S) then
-                moveDir = moveDir - Camera.CFrame.LookVector
-            end
-            if UserInputService:IsKeyDown(Enum.KeyCode.A) then
-                moveDir = moveDir - Camera.CFrame.RightVector
-            end
-            if UserInputService:IsKeyDown(Enum.KeyCode.D) then
-                moveDir = moveDir + Camera.CFrame.RightVector
-            end
+            if UserInputService:IsKeyDown(Enum.KeyCode.W) then moveDir = moveDir + Camera.CFrame.LookVector end
+            if UserInputService:IsKeyDown(Enum.KeyCode.S) then moveDir = moveDir - Camera.CFrame.LookVector end
+            if UserInputService:IsKeyDown(Enum.KeyCode.A) then moveDir = moveDir - Camera.CFrame.RightVector end
+            if UserInputService:IsKeyDown(Enum.KeyCode.D) then moveDir = moveDir + Camera.CFrame.RightVector end
             bv.Velocity = moveDir * getgenv().YuanConfig.FlySpeed
         end
     end
 end)
 
--- 4. ESP Logic (Players & Enemies)
+-- 4. ESP Engine
 local espCache = {}
 
 local function CreateESP(object, nameText)
     if espCache[object] then return end
-    
     local box = Drawing.new("Square")
     box.Visible = false
     box.Color = Color3.fromRGB(255, 255, 255)
@@ -309,15 +347,7 @@ local function CreateESP(object, nameText)
     name.Center = true
     name.Outline = true
 
-    espCache[object] = {Box = box, Name = name, Target = object}
-end
-
-local function RemoveESP(object)
-    if espCache[object] then
-        espCache[object].Box:Remove()
-        espCache[object].Name:Remove()
-        espCache[object] = nil
-    end
+    espCache[object] = {Box = box, Name = name}
 end
 
 CreateToggle("ESP (Players & NPCs)", false, function(state)
@@ -333,26 +363,23 @@ end)
 RunService.RenderStepped:Connect(function()
     if not getgenv().YuanConfig.ESPEnabled then return end
 
-    -- Manage Players ESP
     for _, player in ipairs(Players:GetPlayers()) do
         if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") and player.Character:FindFirstChild("Humanoid") and player.Character.Humanoid.Health > 0 then
-            CreateESP(player.Character, player.Name)
+            CreateESP(player.Character)
         end
     end
 
-    -- Manage NPCs ESP
     local enemiesFolder = Workspace:FindFirstChild("Enemies")
     if enemiesFolder then
         for _, npc in ipairs(enemiesFolder:GetChildren()) do
             local hum = npc:FindFirstChildOfClass("Humanoid")
             local hrp = npc:FindFirstChild("HumanoidRootPart")
             if hum and hrp and hum.Health > 0 then
-                CreateESP(npc, npc.Name)
+                CreateESP(npc)
             end
         end
     end
 
-    -- Render ESP items
     for obj, data in pairs(espCache) do
         if obj and obj.Parent and obj:FindFirstChild("HumanoidRootPart") and obj:FindFirstChildOfClass("Humanoid") and obj.Humanoid.Health > 0 then
             local hrp = obj.HumanoidRootPart
@@ -377,9 +404,9 @@ RunService.RenderStepped:Connect(function()
         else
             data.Box.Visible = false
             data.Name.Visible = false
-            RemoveESP(obj)
+            espCache[obj] = nil
         end
     end
 end)
 
-print("Yuan Blox Fruits Hub Loaded Successfully!")
+print("Yuan God Mode Hub V3 Loaded Successfully!")
